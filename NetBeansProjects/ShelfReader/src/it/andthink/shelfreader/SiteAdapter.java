@@ -6,10 +6,8 @@ package it.andthink.shelfreader;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
-import java.util.StringTokenizer;
 import javax.swing.*;
 
 /**
@@ -57,6 +55,16 @@ public class SiteAdapter implements ActionListener {
 							@Override
 							public void actionPerformed(ActionEvent e) {
 								siteCopy();
+							}
+						});
+						jp.add(copy);
+						
+						copy = new JMenuItem("Copy (Memory Cursor Variable Declaration)");
+						copy.addActionListener(new ActionListener() {
+
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								MCCopy();
 							}
 						});
 						jp.add(copy);
@@ -109,6 +117,28 @@ public class SiteAdapter implements ActionListener {
 				sbf.append("*--*\n");
 			}
 
+
+			stsel = new StringSelection(sbf.toString());
+			system = Toolkit.getDefaultToolkit().getSystemClipboard();
+			system.setContents(stsel, stsel);
+	}
+	
+	public void MCCopy(){
+			StringBuilder sbf = new StringBuilder();
+			// Check to ensure we have selected only a contiguous block of
+			// cells
+			int numrows = jTable1.getSelectedRowCount();
+			int[] rowsselected = jTable1.getSelectedRows();
+			//seleziono tutte le colonne
+			int[] colsselected = {0,1,2,3,4,5,6};
+			
+			for(int i = 0; i < numrows; i++){
+				sbf.append("<variable>\n");
+				sbf.append("\t<name>").append((String) jTable1.getValueAt(rowsselected[i], colsselected[1])).append("</name>\n");
+				sbf.append("\t<description>").append((String) jTable1.getValueAt(rowsselected[i], colsselected[2])).append("</description>\n");
+				sbf.append("\t<type>").append((String) jTable1.getValueAt(rowsselected[i], colsselected[3])).append("</type>\n");
+				sbf.append("</variable>\n");
+			}
 
 			stsel = new StringSelection(sbf.toString());
 			system = Toolkit.getDefaultToolkit().getSystemClipboard();
