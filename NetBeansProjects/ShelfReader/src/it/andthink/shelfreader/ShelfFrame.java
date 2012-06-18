@@ -357,7 +357,7 @@ try{
 			public void run() {
 				executeFilter();
 				initTableAppereance();
-				SiteAdapter siteAdapter = new SiteAdapter(jTableResults);
+				new SiteAdapter(jTableResults);
 				
 				
 			}
