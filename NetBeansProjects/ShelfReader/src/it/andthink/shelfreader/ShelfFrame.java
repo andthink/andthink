@@ -5,11 +5,11 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JTable;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -201,9 +201,14 @@ try{
 		selectRows.removeAll(selectRows);
 		 
 		
-				
+		FileInputStream fstream;
+		
+		
 
-		try (BufferedReader in = new BufferedReader(new FileReader("C:/Sviluppo/PagoWEB/pago/pago.designdef.shelve"))) {
+		try  {
+			fstream = new FileInputStream("C:/Sviluppo/PagoWEB/pago/pago.designdef.shelve");
+			DataInputStream di = new DataInputStream(fstream);				
+			BufferedReader in = new BufferedReader(new InputStreamReader(di,"ISO-8859-1"));
 			String str;
 
 			int foundTables = 0;
