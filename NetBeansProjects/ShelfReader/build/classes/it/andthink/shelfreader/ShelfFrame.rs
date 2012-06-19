@@ -1,0 +1,2 @@
+it.andthink.shelfreader.ColoredTableCellRenderer
+it.andthink.shelfreader.ShelfFrame
