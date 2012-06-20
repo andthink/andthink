@@ -29,6 +29,7 @@ public class ShelfFrame extends javax.swing.JFrame {
 	private javax.swing.table.DefaultTableModel model;
 	private DefaultTableCellRenderer renderer;
 	private ArrayList<Integer> selectRows = new ArrayList();
+	private String shelfPath ="C:/Sviluppo/PagoWEB/pago/pago.designdef.shelve";
 	//private int selectColumn =-1;
 
 	/**
@@ -66,6 +67,7 @@ public class ShelfFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonProjectGroup = new javax.swing.ButtonGroup();
         jTextSearch = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -86,6 +88,8 @@ try{
 }catch(Exception e){
 }
         jButton1 = new javax.swing.JButton();
+        jRadioButtonPagoWEB = new javax.swing.JRadioButton();
+        jRadioButtonPago = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ShelfReader");
@@ -122,6 +126,23 @@ try{
             }
         });
 
+        buttonProjectGroup.add(jRadioButtonPagoWEB);
+        jRadioButtonPagoWEB.setText("PagoWEB");
+        jRadioButtonPagoWEB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonPagoWEBActionPerformed(evt);
+            }
+        });
+
+        buttonProjectGroup.add(jRadioButtonPago);
+        jRadioButtonPago.setSelected(true);
+        jRadioButtonPago.setText("Pago");
+        jRadioButtonPago.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonPagoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -135,6 +156,10 @@ try{
                         .addComponent(jTextSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1)
+                        .addGap(43, 43, 43)
+                        .addComponent(jRadioButtonPagoWEB)
+                        .addGap(18, 18, 18)
+                        .addComponent(jRadioButtonPago)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
@@ -145,10 +170,14 @@ try{
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
-                    .addComponent(jButton1))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jTextSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1)
+                        .addComponent(jButton1))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jRadioButtonPagoWEB)
+                        .addComponent(jRadioButtonPago)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 874, Short.MAX_VALUE)
                 .addGap(28, 28, 28))
@@ -185,6 +214,16 @@ try{
 		// TODO add your handling code here:
 	}//GEN-LAST:event_jTextSearchActionPerformed
 
+	private void jRadioButtonPagoWEBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonPagoWEBActionPerformed
+		shelfPath = "C:/Sviluppo/PagoWEB/comuni_hr.designdef.shelve";
+		executeFilter();
+	}//GEN-LAST:event_jRadioButtonPagoWEBActionPerformed
+
+	private void jRadioButtonPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonPagoActionPerformed
+		shelfPath = "C:/Sviluppo/PagoWEB/pago/pago.designdef.shelve";
+		executeFilter();
+	}//GEN-LAST:event_jRadioButtonPagoActionPerformed
+
 	private void initTableModel() {
 		model = new DefaultTableModel();
 		model.addColumn("Tabella");
@@ -202,11 +241,9 @@ try{
 		 
 		
 		FileInputStream fstream;
-		
-		
 
 		try  {
-			fstream = new FileInputStream("C:/Sviluppo/PagoWEB/pago/pago.designdef.shelve");
+			fstream = new FileInputStream(shelfPath);
 			DataInputStream di = new DataInputStream(fstream);				
 			BufferedReader in = new BufferedReader(new InputStreamReader(di,"ISO-8859-1"));
 			String str;
@@ -371,8 +408,11 @@ try{
 
 	
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonProjectGroup;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JRadioButton jRadioButtonPago;
+    private javax.swing.JRadioButton jRadioButtonPagoWEB;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTableResults;
     private javax.swing.JTextField jTextSearch;
