@@ -32,7 +32,7 @@ public class GUI extends javax.swing.JFrame {
 	/**
 	 * Creates new form GUI
 	 */
-	public GUI() {
+	public GUI(String args[]) {
 		initComponents();
 
 		//Mostro tutte le VisualQuery
@@ -116,6 +116,11 @@ public class GUI extends javax.swing.JFrame {
 		int y = screenSize.height - size.height;
 		int x = screenSize.width - size.width;
 		this.setLocation(x, y);
+		
+		if(args.length == 1 ){
+			tfSearch.setText(args[0]);
+			doSearch();
+		}
 	}	
 	
 	private String getSelectedVQ(){
@@ -755,7 +760,7 @@ public class GUI extends javax.swing.JFrame {
 	/**
 	 * @param args the command line arguments
 	 */
-	public static void main(String args[]) {
+	public static void main(final String args[]) {
 		/*
 		 * Set the Nimbus look and feel
 		 */
@@ -778,9 +783,12 @@ public class GUI extends javax.swing.JFrame {
 
 			@Override
 			public void run() {
-				new GUI().setVisible(true);
+				new GUI(args).setVisible(true);
 			}
 		});
+		
+		if (args.length == 1) {
+		}
 	}
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable VQJField;
