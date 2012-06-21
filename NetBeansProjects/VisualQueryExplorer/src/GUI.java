@@ -1,4 +1,5 @@
 
+import it.andthink.utils.Open;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Image;
@@ -26,7 +27,6 @@ public class GUI extends javax.swing.JFrame {
 
 	private final String path = "C:/Sviluppo/PagoWEB/pago/exe";
 	private VQList v;
-	
 	JPopupMenu menu;
 
 	/**
@@ -64,7 +64,7 @@ public class GUI extends javax.swing.JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
-					launchVQInBrowser(getSelectedVQ());
+					Open.launchVQInBrowser(getSelectedVQ());
 				} else if (!e.isPopupTrigger()) {
 					ShowVisualQuery(path + "/" + getSelectedVQ());
 				}
@@ -116,14 +116,14 @@ public class GUI extends javax.swing.JFrame {
 		int y = screenSize.height - size.height;
 		int x = screenSize.width - size.width;
 		this.setLocation(x, y);
-		
-		if(args.length == 1 ){
+
+		if (args.length == 1) {
 			tfSearch.setText(args[0]);
 			doSearch();
 		}
-	}	
-	
-	private String getSelectedVQ(){
+	}
+
+	private String getSelectedVQ() {
 		int nRow = VisualQueryList.getSelectedRow();
 		int nCol = VisualQueryList.getSelectedColumn();
 
@@ -132,7 +132,7 @@ public class GUI extends javax.swing.JFrame {
 
 		return objSel.toString();
 	}
-	
+
 	private String getReadSP(String visQue) {
 		String ClipBoardTxt = "";
 
@@ -179,40 +179,6 @@ public class GUI extends javax.swing.JFrame {
 				+ "*--*" + "\n";
 
 		return ClipBoardTxt;
-	}
-
-	private void launchVQInBrowser(String visQue) {
-		String url = "http://localhost:8080/PagoWEB/visualquery/index.jsp?filename=" + visQue;
-		String os = System.getProperty("os.name").toLowerCase();
-		Runtime rt = Runtime.getRuntime();
-
-		try {
-			if (os.indexOf("win") >= 0) {
-
-				// this doesn't support showing urls in the form of "page.html#nameLink"
-				rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
-
-			} else if (os.indexOf("mac") >= 0) {
-
-				rt.exec("open " + url);
-
-			} else if (os.indexOf("nix") >= 0 || os.indexOf("nux") >= 0) {
-
-				// Do a best guess on unix until we get a platform independent way
-				// Build a list of browsers to try, in this order.
-				String[] browsers = {"epiphany", "firefox", "mozilla", "konqueror",
-					"netscape", "opera", "links", "lynx"};
-
-				// Build a command string which looks like "browser1 "url" || browser2 "url" ||..."
-				StringBuilder cmd = new StringBuilder();
-				for (int i = 0; i < browsers.length; i++) {
-					cmd.append(i == 0 ? "" : " || ").append(browsers[i]).append(" \"").append(url).append("\" ");
-				}
-
-				rt.exec(new String[]{"sh", "-c", cmd.toString()});
-			}
-		} catch (Exception ex) {
-		}
 	}
 
 	private void ShowVisualQuery(String path) {
@@ -388,8 +354,8 @@ public class GUI extends javax.swing.JFrame {
 		((DefaultTableModel) VQJJoin.getModel()).setRowCount(0);
 		((DefaultTableModel) VQJFilter.getModel()).setRowCount(0);
 		((DefaultTableModel) VQJFilterParameter.getModel()).setRowCount(0);
-		
-		//Rigenero la lista delle Visual Query trovate 
+
+		//Rigenero la lista delle Visual Query trovate
 		DefaultTableModel model = (DefaultTableModel) VisualQueryList.getModel();
 		for (int i = 0; i < found.size(); i++) {
 			model.insertRow(i, new Object[]{found.get(i).getName()});
@@ -786,7 +752,7 @@ public class GUI extends javax.swing.JFrame {
 				new GUI(args).setVisible(true);
 			}
 		});
-		
+
 		if (args.length == 1) {
 		}
 	}
