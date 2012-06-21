@@ -16,7 +16,7 @@ import java.io.IOException;
  */
 public class Clipboard {
 	
-	public String getClipboard() {
+	public static String getClipboard() {
 
 		Transferable content = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
 		String text = "";

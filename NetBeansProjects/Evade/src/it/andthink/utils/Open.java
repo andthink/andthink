@@ -15,7 +15,7 @@ import java.io.IOException;
  */
 public class Open {
 
-	public void Edit(File file) {
+	public static void Edit(File file) {
 
 		try {
 			if (System.getProperty("os.name").toLowerCase().contains("windows")) {
@@ -30,7 +30,7 @@ public class Open {
 
 	}
 
-	public void launchVQInBrowser(String visQue) {
+	public static void launchVQInBrowser(String visQue) {
 		String url = "http://localhost:8080/PagoWEB/visualquery/index.jsp?filename=" + visQue;
 		String os = System.getProperty("os.name").toLowerCase();
 		Runtime rt = Runtime.getRuntime();
