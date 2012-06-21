@@ -3,22 +3,20 @@ package it.andthink.utils;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * To change this template, choose Tools | Templates and open the template in
+ * the editor.
  */
-
 /**
  *
  * @author meranr
  */
 public class Open {
-		public void Edit(File file) {
-		
+
+	public void Edit(File file) {
+
 		try {
 			if (System.getProperty("os.name").toLowerCase().contains("windows")) {
 				String cmd = "rundll32 url.dll,FileProtocolHandler " + file.getCanonicalPath();
@@ -28,11 +26,10 @@ public class Open {
 				Desktop.getDesktop().edit(file);
 			}
 		} catch (IOException ex) {
-			
 		}
 
 	}
-	
+
 	public void launchVQInBrowser(String visQue) {
 		String url = "http://localhost:8080/PagoWEB/visualquery/index.jsp?filename=" + visQue;
 		String os = System.getProperty("os.name").toLowerCase();
@@ -66,5 +63,4 @@ public class Open {
 		} catch (Exception ex) {
 		}
 	}
-	
 }
