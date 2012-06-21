@@ -16,6 +16,9 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 /**
  * Classe per la gestione della SystemTray del server
@@ -113,22 +116,25 @@ public class FastClipperSystemTray {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFrame frame = new JFrame("Per correre più veloci..."); 
-				//frame.getContentPane().add(back);
-				frame.setSize(343, 612);
+				frame.setLayout(null);
 				frame.setResizable(false);
-				//frame.setIconImage(imgLockPlan);
-
+				frame.setIconImage(imgClip);
+				frame.setSize(613,433);
+				JTextArea clipboardContent= new JTextArea(getClipboard());
+				clipboardContent.setTabSize(1);
+				JScrollPane jsp = new JScrollPane(clipboardContent);
+				jsp.setBounds(3, 3, 600, 400);
+				frame.add(jsp);
+				
 				//Centro il frame nello schermo 
 				Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 				Dimension size = frame.getSize();
-				screenSize.height =
-				screenSize.height / 2;
+				screenSize.height =	screenSize.height / 2;
 				screenSize.width = screenSize.width / 2;
 				size.height = size.height / 2;
 				size.width = size.width / 2;
 				int y = screenSize.height - size.height;
-				int x = screenSize.width
-						- size.width;
+				int x = screenSize.width - size.width;
 				frame.setLocation(x, y);
 
 				frame.setVisible(true);
@@ -149,11 +155,9 @@ public class FastClipperSystemTray {
 		//Aggiungo gli elemento al PopupMenu
 
 		p.add(SearchAndOpen);
-		
 		p.addSeparator(); 
 		p.add(about); 
 		p.addSeparator();
-		 
 		p.add(esci);
 		return p;
 	}
