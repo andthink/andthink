@@ -32,7 +32,7 @@ public class FastClipperSystemTray {
 	private File FoundFile = null;
 	private Open OpenUtil = new Open();
 	private String WorkingFile = null;
-	
+
 	/**
 	 * Istanzia il programma nella systemTray
 	 */
@@ -44,15 +44,47 @@ public class FastClipperSystemTray {
 
 				java.net.URL imgURL = getClass().getResource("clipboard.png");
 				imgClip = Toolkit.getDefaultToolkit().getImage(imgURL);
-				trayIcon = new TrayIcon(imgClip, "FastClipper" + (WorkingFile==null?"":WorkingFile) , null);
-				
+				trayIcon = new TrayIcon(imgClip, "FastClipper" + (WorkingFile == null ? "" : WorkingFile), null);
+
 				trayIcon.addMouseListener(new MouseAdapter() {
+
 					public void mouseReleased(MouseEvent e) {
 						if (e.isPopupTrigger()) {
-							popupMenu.setLocation(e.getX(), e.getY()-120);
+							popupMenu.setLocation(e.getX(), e.getY() - 120);
 							popupMenu.setInvoker(popupMenu);
 							popupMenu.setVisible(true);
 						}
+					}
+				});
+
+				popupMenu.addMouseListener(new MouseAdapter() {
+
+					@Override
+					public void mouseExited(MouseEvent e) {
+						// MenuSelectionManager disarms the old one and arms the new item in one event of the EventDispatchingThread.
+						// So, after that event we can be sure MenuSelectionManager has completed his job and the new item (or none) is selected.
+						EventQueue.invokeLater(new Runnable() {
+
+							@Override
+							public void run() {
+								if (!isAnItemSelected()) {
+									popupMenu.setVisible(false);
+								}
+							}
+						});
+					}
+
+					private boolean isAnItemSelected() {
+						for (Component comp : popupMenu.getComponents()) {
+							if (comp instanceof JMenuItem) {
+								JMenuItem item = (JMenuItem) comp;
+								if (item.isArmed()) {
+									return true;
+								}
+							}
+						}
+
+						return false;
 					}
 				});
 
@@ -130,12 +162,12 @@ public class FastClipperSystemTray {
 						trayIcon.displayMessage("Apertura in corso", FoundFile.getName(), TrayIcon.MessageType.INFO);
 						Open.Edit(FoundFile);
 					}
-				}else{
+				} else {
 					trayIcon.displayMessage("Nessun file trovato", "Nessun file trovato", TrayIcon.MessageType.WARNING);
 				}
 			}
 		});
-		
+
 		//Azione per il click su SearchAndOpen
 		VisualQueryExplorer.addActionListener(new ActionListener() {
 
@@ -143,45 +175,45 @@ public class FastClipperSystemTray {
 			public void actionPerformed(ActionEvent e) {
 
 				String text = parseClipboard();
-			
+
 				if (text.endsWith(".vqr")) {
-					
+
 					String cmd = "java -jar" + " \"C:\\Users\\meranr\\andthink\\NetBeansProjects\\VisualQueryExplorer\\dist\\VisualQueryExplorer.jar\" " + text;
-					trayIcon.displayMessage("Apertura vqr", cmd, TrayIcon.MessageType.INFO);					
+					trayIcon.displayMessage("Apertura vqr", cmd, TrayIcon.MessageType.INFO);
 					try {
 						Runtime.getRuntime().exec(cmd);
-						
+
 					} catch (IOException ex) {
 						Logger.getLogger(FastClipperSystemTray.class.getName()).log(Level.SEVERE, null, ex);
 					}
-				} else{
+				} else {
 					trayIcon.displayMessage("Nessun file trovato", "Nessuna vqr corrispondente", TrayIcon.MessageType.WARNING);
 				}
-				
+
 			}
 		});
-		
-		
-		
-		
+
+
+
+
 		//Azione per il click su SearchAndOpen
 		OpenEnumeration.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String text = parseClipboard();
-				
+
 				text = text.replace(".", "/");
-				File path = new File("C:/Sviluppo/PagoJ/src/" + text +".java");
-				if(path.exists()){
+				File path = new File("C:/Sviluppo/PagoJ/src/" + text + ".java");
+				if (path.exists()) {
 					Open.Edit(path);
-				}else{
+				} else {
 					trayIcon.displayMessage("Nessun file trovato", "Il percorso cercato non è un enumerato", TrayIcon.MessageType.INFO);
 				}
 			}
 		});
-		
-		
+
+
 		//Azione per il click su About
 
 		WorkingFileItem.addActionListener(new ActionListener() {
@@ -191,17 +223,17 @@ public class FastClipperSystemTray {
 				String text = parseClipboard();
 				File path = new File("C:/Sviluppo/PagoWEB/pago/Entity");
 				searchFile(path, text);
-				if(FoundFile!=null){
+				if (FoundFile != null) {
 					setWorkingFile(text);
 					trayIcon.displayMessage("File di lavoro impostato", text, TrayIcon.MessageType.INFO);
 					trayIcon.setToolTip("FastClipper: " + text);
-				}else{
+				} else {
 					trayIcon.displayMessage("File di lavoro non valido", text, TrayIcon.MessageType.WARNING);
 					trayIcon.setToolTip("FastClipper");
 				}
 			}
 		});
-		
+
 
 
 		//Azione per il click su About
@@ -240,28 +272,28 @@ public class FastClipperSystemTray {
 		p.add(esci);
 		return p;
 	}
-	
-	private String parseClipboard(){
-		
+
+	private String parseClipboard() {
+
 		String clip = Clipboard.getClipboard();
 		String[] split = clip.split("[\r]*\n");
-		
-		if("* --- CodePainter Revolution Batch Cut Vers. 1.0".equals(split[0])){
-			int i=1;
+
+		if ("* --- CodePainter Revolution Batch Cut Vers. 1.0".equals(split[0])) {
+			int i = 1;
 			for (int j = 0; j < split.length; j++) {
-				if(split[j].startsWith("frm_seek='") && split[j].endsWith(".MCRDef")){
+				if (split[j].startsWith("frm_seek='") && split[j].endsWith(".MCRDef")) {
 					clip = split[j].replace("frm_seek='", "");
 					break;
 				}
-				if(split[j].startsWith("sel_name=")){
-					clip = split[j].replace("sel_name='", "")+".vqr";
+				if (split[j].startsWith("sel_name=")) {
+					clip = split[j].replace("sel_name='", "") + ".vqr";
 					break;
 				}
 			}
 		}
-		
+
 		System.out.println(clip);
-	
+
 		return clip;
 	}
 
@@ -306,7 +338,6 @@ public class FastClipperSystemTray {
 
 				} catch (IOException exc) {
 				}
-				//	trayIcon.displayMessage("Who", whois.substring(2), TrayIcon.MessageType.INFO);
 			}
 		}
 	}
@@ -320,16 +351,7 @@ public class FastClipperSystemTray {
 			//javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
 			java.util.logging.Logger.getLogger(FastClipperSystemTray.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-			/*
-			 * try { for (javax.swing.UIManager.LookAndFeelInfo info :
-			 * javax.swing.UIManager.getInstalledLookAndFeels()) { if ("Nimbus".equals(info.getName())) {
-			 * javax.swing.UIManager.setLookAndFeel(info.getClassName()); break; } } } catch (
-			 * ClassNotFoundException | InstantiationException | IllegalAccessException |
-			 * javax.swing.UnsupportedLookAndFeelException exc) {
-			 * java.util.logging.Logger.getLogger(ShelfFrame.class.getName()).log(java.util.logging.Level.SEVERE,
-			 * null, exc);
-			}
-			 */
+
 		}
 		new FastClipperSystemTray();
 	}
