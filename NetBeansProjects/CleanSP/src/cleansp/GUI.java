@@ -308,7 +308,7 @@ public class GUI extends javax.swing.JFrame {
 		long end = date.getTime();
 		String endstr = new Timestamp(end).toString();
 
-		String duratastr = this.getDurata(end, start);
+		String duratastr = this.getDurata(start, end);
 
 		//Emetto la message log con il riepilogo
 		JOptionPane.showMessageDialog(this,
@@ -362,7 +362,7 @@ public class GUI extends javax.swing.JFrame {
 			}
 
 			JOptionPane.showMessageDialog(this, "File eliminati", "Fine", JOptionPane.INFORMATION_MESSAGE);
-			doSearch();
+			((DefaultTableModel) tableResult.getModel()).setRowCount(0);
 			//Reimposto il cursore di default
 			this.setCursor(Cursor.getDefaultCursor());
 		}		// TODO add your handling code here:
